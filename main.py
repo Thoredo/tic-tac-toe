@@ -1,8 +1,7 @@
 import tkinter as tk
-
-window = tk.Tk()
-window.title("Tic Tac Toe")
-window.geometry("800x800")
+from game import TicTacToeApp
 
 if __name__ == "__main__":
-    window.mainloop()
+    root = tk.Tk()
+    app = TicTacToeApp(root)
+    root.mainloop()
