@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from functools import partial
 
 
@@ -48,19 +49,22 @@ class TicTacToeBoard:
 
     def handle_turn(self, num, player_one, player_two):
         # Handle player one turn
-        if self.current_player == "player_one":
-            self.buttons[num].config(
-                text="X", font=("Helvetica", 73), width=3, height=1, fg="red"
-            )
-            self.current_player = "player_two"
-            self.change_turn_label(player_two.player_name)
-        # Handle player two turn
-        elif self.current_player == "player_two":
-            self.buttons[num].config(
-                text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
-            )
-            self.current_player = "player_one"
-            self.change_turn_label(player_one.player_name)
+        if self.buttons[num].cget("text") == "":
+            if self.current_player == "player_one":
+                self.buttons[num].config(
+                    text="X", font=("Helvetica", 73), width=3, height=1, fg="red"
+                )
+                self.current_player = "player_two"
+                self.change_turn_label(player_two.player_name)
+            # Handle player two turn
+            elif self.current_player == "player_two":
+                self.buttons[num].config(
+                    text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
+                )
+                self.current_player = "player_one"
+                self.change_turn_label(player_one.player_name)
+        else:
+            messagebox.showwarning("Cell Taken", "Please select an empty cell")
 
     def change_turn_label(self, player_name):
         self.turn_label.config(text=f"{player_name} it is your turn.")
