@@ -1,5 +1,6 @@
 import tkinter as tk
 from board import TicTacToeBoard
+from player import Player
 
 # Common styling options for buttons
 BUTTON_STYLE = {
@@ -17,7 +18,10 @@ class TicTacToeApp:
         self.master = master
         self.master.title("Tic Tac Toe")
         self.master.geometry("800x800")
+        self.main_menu()
+        self.current_player = "player_one"
 
+    def main_menu(self):
         self.master.welcome_label = tk.Label(
             text="Welcome to Tic Tac Toe!", **LABEL_STYLE
         )
@@ -76,14 +80,18 @@ class TicTacToeApp:
     def two_player_game(self):
         board = TicTacToeBoard(self.master)
         board.create_board()
+        player_one = Player(1)
+        player_two = Player(2)
         self.release_grab()
 
     def easy_ai_game(self):
         board = TicTacToeBoard(self.master)
         board.create_board()
+        player_one = Player(1)
         self.release_grab()
 
     def hard_ai_game(self):
         board = TicTacToeBoard(self.master)
         board.create_board()
+        player_one = Player(1)
         self.release_grab()
