@@ -1,9 +1,12 @@
 import tkinter as tk
+from functools import partial
 
 
 class TicTacToeBoard:
     def __init__(self, master):
         self.master = master
+        self.current_player = "player_one"
+        self.buttons = []
 
     def create_board(self, player_one, player_two):
         # Create a frame for the board
@@ -15,10 +18,17 @@ class TicTacToeBoard:
         row_number = 0
         column_number = 0
         for i in range(0, 9):
-            new_button = tk.Button(
-                board_frame, text="", width=25, height=12, borderwidth=1, relief="solid"
+            self.new_button = tk.Button(
+                board_frame,
+                text="",
+                width=25,
+                height=12,
+                borderwidth=1,
+                relief="solid",
+                command=partial(self.handle_turn, i),
             )
-            new_button.grid(row=row_number, column=column_number)
+            self.buttons.append(self.new_button)
+            self.new_button.grid(row=row_number, column=column_number)
             column_number += 1
             if column_number == 3:
                 column_number = 0
@@ -31,3 +41,13 @@ class TicTacToeBoard:
             fg="#D21404",
         )
         self.turn_label.grid(row=3, column=0)
+
+    def handle_turn(self, num):
+        if self.current_player == "player_one":
+            print(self.current_player)
+            self.buttons[num].config(text="X")
+            self.current_player = "player_two"
+        elif self.current_player == "player_two":
+            print(self.current_player)
+            self.buttons[num].config(text="O")
+            self.current_player = "player_one"

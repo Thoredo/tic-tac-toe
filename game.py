@@ -19,7 +19,6 @@ class TicTacToeApp:
         self.master.title("Tic Tac Toe")
         self.master.geometry("800x800")
         self.main_menu()
-        self.current_player = "player_one"
 
     def main_menu(self):
         self.master.welcome_label = tk.Label(
