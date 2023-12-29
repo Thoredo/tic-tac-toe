@@ -25,7 +25,7 @@ class TicTacToeBoard:
                 height=12,
                 borderwidth=1,
                 relief="solid",
-                command=partial(self.handle_turn, i),
+                command=partial(self.handle_turn, i, player_one, player_two),
             )
             self.buttons.append(self.new_button)
             self.new_button.grid(row=row_number, column=column_number)
@@ -42,12 +42,15 @@ class TicTacToeBoard:
         )
         self.turn_label.grid(row=3, column=0)
 
-    def handle_turn(self, num):
+    def handle_turn(self, num, player_one, player_two):
         if self.current_player == "player_one":
-            print(self.current_player)
             self.buttons[num].config(text="X")
             self.current_player = "player_two"
+            self.change_turn_label(player_two.player_name)
         elif self.current_player == "player_two":
-            print(self.current_player)
             self.buttons[num].config(text="O")
             self.current_player = "player_one"
+            self.change_turn_label(player_one.player_name)
+
+    def change_turn_label(self, player_name):
+        self.turn_label.config(text=f"{player_name} it is your turn.")
