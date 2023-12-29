@@ -5,7 +5,7 @@ class TicTacToeBoard:
     def __init__(self, master):
         self.master = master
 
-    def create_board(self):
+    def create_board(self, player_one, player_two):
         # Create a frame for the board
         board_frame = tk.Frame(self.master)
         board_frame.grid(row=0, column=0, padx=125, pady=50)
@@ -23,3 +23,11 @@ class TicTacToeBoard:
             if column_number == 3:
                 column_number = 0
                 row_number += 1
+
+        self.turn_label = tk.Label(
+            self.master,
+            text=f"{player_one.player_name} it is your turn.",
+            font=("Helvetica", 26),
+            fg="#D21404",
+        )
+        self.turn_label.grid(row=3, column=0)
