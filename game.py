@@ -1,4 +1,5 @@
 import tkinter as tk
+from board import TicTacToeBoard
 
 # Common styling options for buttons
 BUTTON_STYLE = {
@@ -45,16 +46,23 @@ class TicTacToeApp:
 
         # Add 2 player button
         self.two_players_button = tk.Button(
-            self.new_window, text="2 Players", **BUTTON_STYLE
+            self.new_window,
+            text="2 Players",
+            **BUTTON_STYLE,
+            command=self.two_player_game
         )
         self.two_players_button.grid(row=1, column=0, pady=(0, 20))
 
         # Add Easy AI button
-        self.easy_ai_button = tk.Button(self.new_window, text="Easy AI", **BUTTON_STYLE)
+        self.easy_ai_button = tk.Button(
+            self.new_window, text="Easy AI", **BUTTON_STYLE, command=self.easy_ai_game
+        )
         self.easy_ai_button.grid(row=2, column=0, pady=(0, 20))
 
         # Add Hard AI button
-        self.hard_ai_button = tk.Button(self.new_window, text="Hard AI", **BUTTON_STYLE)
+        self.hard_ai_button = tk.Button(
+            self.new_window, text="Hard AI", **BUTTON_STYLE, command=self.hard_ai_game
+        )
         self.hard_ai_button.grid(row=3, column=0, pady=(0, 20))
 
         # Release the grab when the new game window is closed
@@ -64,3 +72,18 @@ class TicTacToeApp:
         # Enable interaction with the main window when the new game window is closed
         self.master.attributes("-disabled", 0)
         self.new_window.destroy()
+
+    def two_player_game(self):
+        board = TicTacToeBoard(self.master)
+        board.create_board()
+        self.release_grab()
+
+    def easy_ai_game(self):
+        board = TicTacToeBoard(self.master)
+        board.create_board()
+        self.release_grab()
+
+    def hard_ai_game(self):
+        board = TicTacToeBoard(self.master)
+        board.create_board()
+        self.release_grab()
