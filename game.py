@@ -241,9 +241,11 @@ class TicTacToeGame:
                 self.current_player = "player_two"
                 self.board.change_turn_label(self.player_two.player_name)
             elif self.game_mode == "easy ai":
-                self.easy_ai.handle_turn()
+                self.easy_ai.computer_turn = True
+                self.easy_ai.handle_turn(self.board.buttons)
             elif self.game_mode == "hard ai":
-                self.hard_ai.handle_turn()
+                self.hard_ai.computer_turn = True
+                self.hard_ai.handle_turn(self.board.buttons)
         # Handle player two turn
         elif self.current_player == "player_two":
             self.board.buttons[num].config(
