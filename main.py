@@ -1,7 +1,7 @@
 import tkinter as tk
-from game import TicTacToeApp
+from game import TicTacToeGame
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = TicTacToeApp(root)
+    app = TicTacToeGame(root)
     root.mainloop()

@@ -13,7 +13,7 @@ BUTTON_STYLE = {
 LABEL_STYLE = {"font": ("Helvetica", 26), "fg": "#D21404"}
 
 
-class TicTacToeApp:
+class TicTacToeGame:
     def __init__(self, master):
         self.master = master
         self.master.title("Tic Tac Toe")
