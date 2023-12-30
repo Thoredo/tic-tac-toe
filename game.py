@@ -64,6 +64,7 @@ class TicTacToeGame:
         self.player_one_squares = []
         self.player_two_squares = []
         self.main_menu()
+        self.game_mode = ""
 
     def main_menu(self):
         """
@@ -170,6 +171,7 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
+        self.game_mode = "two player"
         self.player_one = Player(1)
         self.player_two = Player(2)
         self.board.create_board(self.player_one, game_instance=self)
@@ -188,6 +190,7 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
+        self.game_mode = "easy ai"
         self.player_one = Player(1)
         easy_ai = ComputerPlayer("easy")
         self.board.create_board(self.player_one, game_instance=self)
@@ -206,6 +209,7 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
+        self.game_mode = "hard ai"
         self.player_one = Player(1)
         hard_ai = ComputerPlayer("hard")
         self.board.create_board(self.player_one, game_instance=self)
