@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import messagebox
 from functools import partial
 
 
@@ -12,8 +11,6 @@ class TicTacToeBoard:
     master (tk.Tk): The main Tkinter window.
     current_player (str): The current player ("player_one"or "player_two").
     buttons (list): List of button widgets representing thegame cells.
-    player_one_squares (list): List of cell indices markedby player one.
-    player_two_squares (list): List of cell indices markedby player two.
 
     Methods
     ----------
@@ -21,11 +18,7 @@ class TicTacToeBoard:
 
     create_board(): Creates the game board.
 
-    handle_turn(): Plays out a player turn once they press one of the buttons on the board.
-
     change_turn_label(): Changes the label that indicates who's turn it is.
-
-    check_winner(): After a turn check if 1 of the players won the game.
 
     remove_gameboard(): Clears the gameboard once a game is finished to make room for the main menu.
     """
@@ -43,10 +36,7 @@ class TicTacToeBoard:
         None
         """
         self.master = master
-        self.current_player = "player_one"
         self.buttons = []
-        self.player_one_squares = []
-        self.player_two_squares = []
 
     def create_board(self, player_one, player_two, game_instance):
         """
@@ -83,7 +73,9 @@ class TicTacToeBoard:
                 height=12,
                 borderwidth=1,
                 relief="solid",
-                command=partial(self.handle_turn, i, player_one, player_two),
+                command=partial(
+                    self.game_instance.handle_turn, i, player_one, player_two
+                ),
             )
             self.buttons.append(self.new_button)
             self.new_button.grid(row=row_number, column=column_number)
@@ -101,41 +93,6 @@ class TicTacToeBoard:
         )
         self.turn_label.grid(row=3, column=0)
 
-    def handle_turn(self, num, player_one, player_two):
-        """
-        Handles a player's turn.
-
-        Parameters
-        ----------
-        num (int): The index of the selected button.
-        player_one (Player): The first player.
-        player_two (Player): The second player.
-
-        Returns
-        -------
-        None
-        """
-        # Handle player one turn
-        if self.buttons[num].cget("text") == "":
-            if self.current_player == "player_one":
-                self.buttons[num].config(
-                    text="X", font=("Helvetica", 73), width=3, height=1, fg="red"
-                )
-                self.current_player = "player_two"
-                self.player_one_squares.append(num)
-                self.change_turn_label(player_two.player_name)
-            # Handle player two turn
-            elif self.current_player == "player_two":
-                self.buttons[num].config(
-                    text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
-                )
-                self.current_player = "player_one"
-                self.player_two_squares.append(num)
-                self.change_turn_label(player_one.player_name)
-            self.check_winner()
-        else:
-            messagebox.showwarning("Cell Taken", "Please select an empty cell")
-
     def change_turn_label(self, player_name):
         """
         Changes the the turn label
@@ -149,37 +106,6 @@ class TicTacToeBoard:
         None
         """
         self.turn_label.config(text=f"{player_name} it is your turn.")
-
-    def check_winner(self):
-        """
-        Checks if the player who just had a turn won the game.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-        """
-        winning_conditions = [
-            (0, 1, 2),
-            (3, 4, 5),
-            (6, 7, 8),
-            (0, 3, 6),
-            (1, 4, 7),
-            (2, 5, 8),
-            (0, 4, 8),
-            (2, 4, 6),
-        ]
-
-        for row in winning_conditions:
-            if all(num in self.player_one_squares for num in row):
-                messagebox.showinfo("Winner", "Player One Wins")
-                self.remove_gameboard()
-            elif all(num in self.player_two_squares for num in row):
-                messagebox.showinfo("Winner", "Player Two Wins")
-                self.remove_gameboard()
 
     def remove_gameboard(self):
         """
@@ -197,4 +123,7 @@ class TicTacToeBoard:
             button.grid_remove()
         self.turn_label.grid_remove()
         self.board_frame.grid_remove()
+        self.game_instance.current_player = "player_one"
+        self.game_instance.player_one_squares = []
+        self.game_instance.player_two_squares = []
         self.game_instance.main_menu()

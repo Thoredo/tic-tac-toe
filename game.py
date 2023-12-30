@@ -1,6 +1,7 @@
 import tkinter as tk
 from board import TicTacToeBoard
 from player import Player
+from tkinter import messagebox
 
 # Common styling options for buttons
 BUTTON_STYLE = {
@@ -20,6 +21,8 @@ class TicTacToeGame:
     Attributes
     ----------
     master(tk.Tk): The main Tkinter window.
+    player_one_squares (list): List of cell indices markedby player one.
+    player_two_squares (list): List of cell indices markedby player two.
 
     Methods
     ----------
@@ -39,6 +42,10 @@ class TicTacToeGame:
     easy_ai_game(): Starts a game against an easy AI opponent.
 
     hard_ai_game(): Starts a game against an hard AI opponent.
+
+    handle_turn(): Plays out a player turn once they press one of the buttons on the board.
+
+    check_winner(): After a turn check if 1 of the players won the game.
     """
 
     def __init__(self, master):
@@ -52,6 +59,9 @@ class TicTacToeGame:
         self.master = master
         self.master.title("Tic Tac Toe")
         self.master.geometry("800x800")
+        self.current_player = "player_one"
+        self.player_one_squares = []
+        self.player_two_squares = []
         self.main_menu()
 
     def main_menu(self):
@@ -111,7 +121,7 @@ class TicTacToeGame:
             self.new_window,
             text="2 Players",
             **BUTTON_STYLE,
-            command=self.two_player_game
+            command=self.two_player_game,
         )
         self.two_players_button.grid(row=1, column=0, pady=(0, 20))
 
@@ -158,10 +168,10 @@ class TicTacToeGame:
         -------
         None
         """
-        board = TicTacToeBoard(self.master)
+        self.board = TicTacToeBoard(self.master)
         player_one = Player(1)
         player_two = Player(2)
-        board.create_board(player_one, player_two, game_instance=self)
+        self.board.create_board(player_one, player_two, game_instance=self)
         self.release_grab()
 
     def easy_ai_game(self):
@@ -176,9 +186,9 @@ class TicTacToeGame:
         -------
         None
         """
-        board = TicTacToeBoard(self.master)
+        self.board = TicTacToeBoard(self.master)
         player_one = Player(1)
-        board.create_board(player_one)
+        self.board.create_board(player_one)
         self.release_grab()
 
     def hard_ai_game(self):
@@ -193,7 +203,73 @@ class TicTacToeGame:
         -------
         None
         """
-        board = TicTacToeBoard(self.master)
+        self.board = TicTacToeBoard(self.master)
         player_one = Player(1)
-        board.create_board(player_one)
+        self.board.create_board(player_one)
         self.release_grab()
+
+    def handle_turn(self, num, player_one, player_two):
+        """
+        Handles a player's turn.
+
+        Parameters
+        ----------
+        num (int): The index of the selected button.
+        player_one (Player): The first player.
+        player_two (Player): The second player.
+
+        Returns
+        -------
+        None
+        """
+        if self.board.buttons[num].cget("text") == "":
+            # Handle player one turn
+            if self.current_player == "player_one":
+                self.board.buttons[num].config(
+                    text="X", font=("Helvetica", 73), width=3, height=1, fg="red"
+                )
+                self.current_player = "player_two"
+                self.player_one_squares.append(num)
+                self.board.change_turn_label(player_two.player_name)
+            # Handle player two turn
+            elif self.current_player == "player_two":
+                self.board.buttons[num].config(
+                    text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
+                )
+                self.current_player = "player_one"
+                self.player_two_squares.append(num)
+                self.board.change_turn_label(player_one.player_name)
+            self.check_winner()
+        else:
+            messagebox.showwarning("Cell Taken", "Please select an empty cell")
+
+    def check_winner(self):
+        """
+        Checks if the player who just had a turn won the game.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
+        winning_conditions = [
+            (0, 1, 2),
+            (3, 4, 5),
+            (6, 7, 8),
+            (0, 3, 6),
+            (1, 4, 7),
+            (2, 5, 8),
+            (0, 4, 8),
+            (2, 4, 6),
+        ]
+
+        for row in winning_conditions:
+            if all(num in self.player_one_squares for num in row):
+                messagebox.showinfo("Winner", "Player One Wins")
+                self.board.remove_gameboard()
+            elif all(num in self.player_two_squares for num in row):
+                messagebox.showinfo("Winner", "Player Two Wins")
+                self.board.remove_gameboard()
