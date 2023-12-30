@@ -80,7 +80,7 @@ class TicTacToeApp:
         board = TicTacToeBoard(self.master)
         player_one = Player(1)
         player_two = Player(2)
-        board.create_board(player_one, player_two)
+        board.create_board(player_one, player_two, game_instance=self)
         self.release_grab()
 
     def easy_ai_game(self):
