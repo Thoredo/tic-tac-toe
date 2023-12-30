@@ -279,6 +279,8 @@ class TicTacToeGame:
             (2, 4, 6),
         ]
 
+        draw = all(button.cget("text") != "" for button in self.board.buttons)
+
         for row in winning_conditions:
             if all(num in self.player_one_squares for num in row):
                 messagebox.showinfo("Winner", f"{self.player_one.player_name} Wins")
@@ -286,3 +288,7 @@ class TicTacToeGame:
             elif all(num in self.player_two_squares for num in row):
                 messagebox.showinfo("Winner", f"{self.player_two.player_name} Wins")
                 self.board.remove_gameboard()
+
+        if draw:
+            messagebox.showinfo("Draw", "It's a draw!")
+            self.board.remove_gameboard()
