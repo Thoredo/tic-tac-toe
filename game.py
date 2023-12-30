@@ -192,7 +192,7 @@ class TicTacToeGame:
         self.board = TicTacToeBoard(self.master)
         self.game_mode = "easy ai"
         self.player_one = Player(1)
-        easy_ai = ComputerPlayer("easy")
+        self.easy_ai = ComputerPlayer("easy")
         self.board.create_board(self.player_one, game_instance=self)
         self.release_grab()
 
@@ -211,7 +211,7 @@ class TicTacToeGame:
         self.board = TicTacToeBoard(self.master)
         self.game_mode = "hard ai"
         self.player_one = Player(1)
-        hard_ai = ComputerPlayer("hard")
+        self.hard_ai = ComputerPlayer("hard")
         self.board.create_board(self.player_one, game_instance=self)
         self.release_grab()
 
@@ -227,26 +227,32 @@ class TicTacToeGame:
         -------
         None
         """
-        if self.board.buttons[num].cget("text") == "":
-            # Handle player one turn
-            if self.current_player == "player_one":
-                self.board.buttons[num].config(
-                    text="X", font=("Helvetica", 73), width=3, height=1, fg="red"
-                )
-                self.current_player = "player_two"
-                self.player_one_squares.append(num)
-                self.board.change_turn_label(self.player_two.player_name)
-            # Handle player two turn
-            elif self.current_player == "player_two":
-                self.board.buttons[num].config(
-                    text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
-                )
-                self.current_player = "player_one"
-                self.player_two_squares.append(num)
-                self.board.change_turn_label(self.player_one.player_name)
-            self.check_winner()
-        else:
+        if self.board.buttons[num].cget("text") != "":
             messagebox.showwarning("Cell Taken", "Please select an empty cell")
+            return
+
+        # Handle player one turn
+        if self.current_player == "player_one":
+            self.board.buttons[num].config(
+                text="X", font=("Helvetica", 73), width=3, height=1, fg="red"
+            )
+            self.player_one_squares.append(num)
+            if self.game_mode == "two player":
+                self.current_player = "player_two"
+                self.board.change_turn_label(self.player_two.player_name)
+            elif self.game_mode == "easy ai":
+                self.easy_ai.handle_turn()
+            elif self.game_mode == "hard ai":
+                self.hard_ai.handle_turn()
+        # Handle player two turn
+        elif self.current_player == "player_two":
+            self.board.buttons[num].config(
+                text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
+            )
+            self.current_player = "player_one"
+            self.player_two_squares.append(num)
+            self.board.change_turn_label(self.player_one.player_name)
+        self.check_winner()
 
     def check_winner(self):
         """
