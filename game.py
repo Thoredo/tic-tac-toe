@@ -63,6 +63,7 @@ class TicTacToeGame:
         self.current_player = "player_one"
         self.player_one_squares = []
         self.player_two_squares = []
+        self.computer_squares = []
         self.main_menu()
         self.game_mode = ""
 
@@ -242,10 +243,12 @@ class TicTacToeGame:
                 self.board.change_turn_label(self.player_two.player_name)
             elif self.game_mode == "easy ai":
                 self.easy_ai.computer_turn = True
-                self.easy_ai.handle_turn(self.board.buttons)
+                number = self.easy_ai.handle_turn(self.board.buttons)
+                self.computer_squares.append(number)
             elif self.game_mode == "hard ai":
                 self.hard_ai.computer_turn = True
-                self.hard_ai.handle_turn(self.board.buttons)
+                number = self.hard_ai.handle_turn(self.board.buttons)
+                self.computer_squares.append(number)
         # Handle player two turn
         elif self.current_player == "player_two":
             self.board.buttons[num].config(
@@ -287,6 +290,9 @@ class TicTacToeGame:
                 self.board.remove_gameboard()
             elif all(num in self.player_two_squares for num in row):
                 messagebox.showinfo("Winner", f"{self.player_two.player_name} Wins")
+                self.board.remove_gameboard()
+            elif all(num in self.computer_squares for num in row):
+                messagebox.showinfo("Winner", "The AI Wins")
                 self.board.remove_gameboard()
 
         if draw:
