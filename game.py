@@ -169,9 +169,9 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
-        player_one = Player(1)
-        player_two = Player(2)
-        self.board.create_board(player_one, player_two, game_instance=self)
+        self.player_one = Player(1)
+        self.player_two = Player(2)
+        self.board.create_board(self.player_one, self.player_two, game_instance=self)
         self.release_grab()
 
     def easy_ai_game(self):
@@ -208,15 +208,13 @@ class TicTacToeGame:
         self.board.create_board(player_one)
         self.release_grab()
 
-    def handle_turn(self, num, player_one, player_two):
+    def handle_turn(self, num):
         """
         Handles a player's turn.
 
         Parameters
         ----------
         num (int): The index of the selected button.
-        player_one (Player): The first player.
-        player_two (Player): The second player.
 
         Returns
         -------
@@ -230,7 +228,7 @@ class TicTacToeGame:
                 )
                 self.current_player = "player_two"
                 self.player_one_squares.append(num)
-                self.board.change_turn_label(player_two.player_name)
+                self.board.change_turn_label(self.player_two.player_name)
             # Handle player two turn
             elif self.current_player == "player_two":
                 self.board.buttons[num].config(
@@ -238,7 +236,7 @@ class TicTacToeGame:
                 )
                 self.current_player = "player_one"
                 self.player_two_squares.append(num)
-                self.board.change_turn_label(player_one.player_name)
+                self.board.change_turn_label(self.player_one.player_name)
             self.check_winner()
         else:
             messagebox.showwarning("Cell Taken", "Please select an empty cell")
@@ -268,8 +266,8 @@ class TicTacToeGame:
 
         for row in winning_conditions:
             if all(num in self.player_one_squares for num in row):
-                messagebox.showinfo("Winner", "Player One Wins")
+                messagebox.showinfo("Winner", f"{self.player_one.player_name} Wins")
                 self.board.remove_gameboard()
             elif all(num in self.player_two_squares for num in row):
-                messagebox.showinfo("Winner", "Player Two Wins")
+                messagebox.showinfo("Winner", f"{self.player_two.player_name} Wins")
                 self.board.remove_gameboard()

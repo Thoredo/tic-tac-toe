@@ -73,9 +73,7 @@ class TicTacToeBoard:
                 height=12,
                 borderwidth=1,
                 relief="solid",
-                command=partial(
-                    self.game_instance.handle_turn, i, player_one, player_two
-                ),
+                command=partial(self.game_instance.handle_turn, i),
             )
             self.buttons.append(self.new_button)
             self.new_button.grid(row=row_number, column=column_number)
