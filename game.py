@@ -1,7 +1,8 @@
 import tkinter as tk
+from tkinter import messagebox
 from board import TicTacToeBoard
 from player import Player
-from tkinter import messagebox
+from ai import ComputerPlayer
 
 # Common styling options for buttons
 BUTTON_STYLE = {
@@ -171,7 +172,7 @@ class TicTacToeGame:
         self.board = TicTacToeBoard(self.master)
         self.player_one = Player(1)
         self.player_two = Player(2)
-        self.board.create_board(self.player_one, self.player_two, game_instance=self)
+        self.board.create_board(self.player_one, game_instance=self)
         self.release_grab()
 
     def easy_ai_game(self):
@@ -187,8 +188,9 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
-        player_one = Player(1)
-        self.board.create_board(player_one)
+        self.player_one = Player(1)
+        easy_ai = ComputerPlayer("easy")
+        self.board.create_board(self.player_one, game_instance=self)
         self.release_grab()
 
     def hard_ai_game(self):
@@ -204,8 +206,9 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
-        player_one = Player(1)
-        self.board.create_board(player_one)
+        self.player_one = Player(1)
+        hard_ai = ComputerPlayer("hard")
+        self.board.create_board(self.player_one, game_instance=self)
         self.release_grab()
 
     def handle_turn(self, num):

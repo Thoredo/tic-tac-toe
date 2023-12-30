@@ -38,7 +38,7 @@ class TicTacToeBoard:
         self.master = master
         self.buttons = []
 
-    def create_board(self, player_one, player_two, game_instance):
+    def create_board(self, player_one, game_instance):
         """
         Creates the Tic Tac Toe game board.
 
