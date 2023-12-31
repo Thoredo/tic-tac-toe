@@ -304,3 +304,5 @@ class TicTacToeGame:
         if draw and self.someone_won == False:
             messagebox.showinfo("Draw", "It's a draw!")
             self.board.remove_gameboard()
+
+        self.someone_won = False

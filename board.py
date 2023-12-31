@@ -125,5 +125,4 @@ class TicTacToeBoard:
         self.game_instance.player_one_squares = []
         self.game_instance.player_two_squares = []
         self.game_instance.computer_squares = []
-        self.game_instance.someone_won = False
         self.game_instance.main_menu()
