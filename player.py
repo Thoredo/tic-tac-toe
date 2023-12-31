@@ -23,5 +23,5 @@ class Player:
         self.player_name = askstring(
             "Name", f"What is the name of player {self.player_number}"
         )
-        if self.player_name == "":
+        if self.player_name == "" or self.player_name == None:
             self.player_name = f"Player {self.player_number}"
