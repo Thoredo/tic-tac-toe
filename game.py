@@ -66,6 +66,7 @@ class TicTacToeGame:
         self.computer_squares = []
         self.main_menu()
         self.game_mode = ""
+        self.someone_won = False
 
     def main_menu(self):
         """
@@ -247,7 +248,9 @@ class TicTacToeGame:
                 self.computer_squares.append(number)
             elif self.game_mode == "hard ai":
                 self.hard_ai.computer_turn = True
-                number = self.hard_ai.handle_turn(self.board.buttons)
+                number = self.hard_ai.handle_turn(
+                    self.board.buttons, player_squares=self.player_one_squares
+                )
                 self.computer_squares.append(number)
         # Handle player two turn
         elif self.current_player == "player_two":
@@ -287,14 +290,17 @@ class TicTacToeGame:
         for row in winning_conditions:
             if all(num in self.player_one_squares for num in row):
                 messagebox.showinfo("Winner", f"{self.player_one.player_name} Wins")
+                self.someone_won = True
                 self.board.remove_gameboard()
             elif all(num in self.player_two_squares for num in row):
                 messagebox.showinfo("Winner", f"{self.player_two.player_name} Wins")
+                self.someone_won = True
                 self.board.remove_gameboard()
             elif all(num in self.computer_squares for num in row):
                 messagebox.showinfo("Winner", "The AI Wins")
+                self.someone_won = True
                 self.board.remove_gameboard()
 
-        if draw:
+        if draw and self.someone_won == False:
             messagebox.showinfo("Draw", "It's a draw!")
             self.board.remove_gameboard()
