@@ -41,27 +41,11 @@ class ComputerPlayer:
                 computer_victory_row = self.check_win_chances(buttons, "O")
                 player_victory_row = self.check_win_chances(buttons, "X")
                 if computer_victory_row != None:
-                    for button_index in computer_victory_row:
-                        if buttons[button_index].cget("text") == "":
-                            buttons[button_index].config(
-                                text="O",
-                                font=("Helvetica", 73),
-                                width=3,
-                                height=1,
-                                fg="blue",
-                            )
-                            return button_index
+                    button_index = self.play_optimal_move(buttons, computer_victory_row)
+                    return button_index
                 elif player_victory_row != None:
-                    for button_index in player_victory_row:
-                        if buttons[button_index].cget("text") == "":
-                            buttons[button_index].config(
-                                text="O",
-                                font=("Helvetica", 73),
-                                width=3,
-                                height=1,
-                                fg="blue",
-                            )
-                            return button_index
+                    button_index = self.play_optimal_move(buttons, player_victory_row)
+                    return button_index
                 else:
                     self.fill_random_square(buttons)
 
@@ -89,3 +73,15 @@ class ComputerPlayer:
                 return random_number
             if all(button.cget("text") != "" for button in buttons):
                 self.computer_turn = False
+
+    def play_optimal_move(self, buttons, victory_row):
+        for button_index in victory_row:
+            if buttons[button_index].cget("text") == "":
+                buttons[button_index].config(
+                    text="O",
+                    font=("Helvetica", 73),
+                    width=3,
+                    height=1,
+                    fg="blue",
+                )
+                return button_index
