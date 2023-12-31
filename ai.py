@@ -38,10 +38,10 @@ class ComputerPlayer:
                     self.turn_number += 1
                     return random_corner
             else:
-                victory_row = self.check_computer_changes(buttons)
-                danger_row = self.check_player_chances(buttons)
-                if victory_row != None:
-                    for button_index in victory_row:
+                computer_victory_row = self.check_win_chances(buttons, "O")
+                player_victory_row = self.check_win_chances(buttons, "X")
+                if computer_victory_row != None:
+                    for button_index in computer_victory_row:
                         if buttons[button_index].cget("text") == "":
                             buttons[button_index].config(
                                 text="O",
@@ -51,8 +51,8 @@ class ComputerPlayer:
                                 fg="blue",
                             )
                             return button_index
-                elif danger_row != None:
-                    for button_index in danger_row:
+                elif player_victory_row != None:
+                    for button_index in player_victory_row:
                         if buttons[button_index].cget("text") == "":
                             buttons[button_index].config(
                                 text="O",
@@ -65,24 +65,11 @@ class ComputerPlayer:
                 else:
                     self.fill_random_square(buttons)
 
-    def check_player_chances(self, buttons):
+    def check_win_chances(self, buttons, symbol):
         for condition in self.winning_conditions:
             condition_points = 0
             for i in range(0, 3):
-                if buttons[condition[i]].cget("text") == "X":
-                    condition_points += 0.5
-                elif buttons[condition[i]].cget("text") == "":
-                    condition_points += 1
-                else:
-                    condition_points += 5
-            if condition_points == 2:
-                return condition
-
-    def check_computer_changes(self, buttons):
-        for condition in self.winning_conditions:
-            condition_points = 0
-            for i in range(0, 3):
-                if buttons[condition[i]].cget("text") == "O":
+                if buttons[condition[i]].cget("text") == symbol:
                     condition_points += 0.5
                 elif buttons[condition[i]].cget("text") == "":
                     condition_points += 1
