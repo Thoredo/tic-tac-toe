@@ -21,16 +21,7 @@ class ComputerPlayer:
 
     def handle_turn(self, buttons, player_squares=None):
         if self.difficulty == "easy":
-            while self.computer_turn:
-                random_number = random.randint(0, 8)
-                if buttons[random_number].cget("text") == "":
-                    buttons[random_number].config(
-                        text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
-                    )
-                    self.computer_turn = False
-                    return random_number
-                if all(button.cget("text") != "" for button in buttons):
-                    self.computer_turn = False
+            self.fill_random_square(buttons)
         if self.difficulty == "hard":
             if self.turn_number == 1:
                 if player_squares[0] in self.corner_numbers:
@@ -72,20 +63,7 @@ class ComputerPlayer:
                             )
                             return button_index
                 else:
-                    while self.computer_turn:
-                        random_number = random.randint(0, 8)
-                        if buttons[random_number].cget("text") == "":
-                            buttons[random_number].config(
-                                text="O",
-                                font=("Helvetica", 73),
-                                width=3,
-                                height=1,
-                                fg="blue",
-                            )
-                            self.computer_turn = False
-                            return random_number
-                        if all(button.cget("text") != "" for button in buttons):
-                            self.computer_turn = False
+                    self.fill_random_square(buttons)
 
     def check_player_chances(self, buttons):
         for condition in self.winning_conditions:
@@ -112,3 +90,15 @@ class ComputerPlayer:
                     condition_points += 5
             if condition_points == 2:
                 return condition
+
+    def fill_random_square(self, buttons):
+        while self.computer_turn:
+            random_number = random.randint(0, 8)
+            if buttons[random_number].cget("text") == "":
+                buttons[random_number].config(
+                    text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
+                )
+                self.computer_turn = False
+                return random_number
+            if all(button.cget("text") != "" for button in buttons):
+                self.computer_turn = False
