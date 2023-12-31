@@ -29,29 +29,28 @@ class ComputerPlayer:
 
     def handle_turn(self, buttons, player_squares=None):
         if self.difficulty == "easy":
-            self.fill_random_square(buttons)
+            button_index = self.fill_random_square(buttons)
         if self.difficulty == "hard":
             if self.turn_number == 1:
                 if player_squares[0] in self.corner_numbers:
                     buttons[4].config(**BUTTON_OPTIONS)
                     self.turn_number += 1
-                    return 4
+                    button_index = 4
                 else:
                     random_corner = random.choice(self.corner_numbers)
                     buttons[random_corner].config(**BUTTON_OPTIONS)
                     self.turn_number += 1
-                    return random_corner
+                    button_index = random_corner
             else:
                 computer_victory_row = self.check_win_chances(buttons, "O")
                 player_victory_row = self.check_win_chances(buttons, "X")
                 if computer_victory_row != None:
                     button_index = self.play_optimal_move(buttons, computer_victory_row)
-                    return button_index
                 elif player_victory_row != None:
                     button_index = self.play_optimal_move(buttons, player_victory_row)
-                    return button_index
                 else:
-                    self.fill_random_square(buttons)
+                    button_index = self.fill_random_square(buttons)
+        return button_index
 
     def check_win_chances(self, buttons, symbol):
         for condition in self.winning_conditions:
