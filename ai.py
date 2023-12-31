@@ -1,5 +1,13 @@
 import random
 
+BUTTON_OPTIONS = {
+    "text": "O",
+    "font": ("Helvetica", 73),
+    "width": 3,
+    "height": 1,
+    "fg": "blue",
+}
+
 
 class ComputerPlayer:
     def __init__(self, difficulty):
@@ -25,16 +33,12 @@ class ComputerPlayer:
         if self.difficulty == "hard":
             if self.turn_number == 1:
                 if player_squares[0] in self.corner_numbers:
-                    buttons[4].config(
-                        text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
-                    )
+                    buttons[4].config(**BUTTON_OPTIONS)
                     self.turn_number += 1
                     return 4
                 else:
                     random_corner = random.choice(self.corner_numbers)
-                    buttons[random_corner].config(
-                        text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
-                    )
+                    buttons[random_corner].config(**BUTTON_OPTIONS)
                     self.turn_number += 1
                     return random_corner
             else:
@@ -66,9 +70,7 @@ class ComputerPlayer:
         while self.computer_turn:
             random_number = random.randint(0, 8)
             if buttons[random_number].cget("text") == "":
-                buttons[random_number].config(
-                    text="O", font=("Helvetica", 73), width=3, height=1, fg="blue"
-                )
+                buttons[random_number].config(**BUTTON_OPTIONS)
                 self.computer_turn = False
                 return random_number
             if all(button.cget("text") != "" for button in buttons):
@@ -77,11 +79,5 @@ class ComputerPlayer:
     def play_optimal_move(self, buttons, victory_row):
         for button_index in victory_row:
             if buttons[button_index].cget("text") == "":
-                buttons[button_index].config(
-                    text="O",
-                    font=("Helvetica", 73),
-                    width=3,
-                    height=1,
-                    fg="blue",
-                )
+                buttons[button_index].config(**BUTTON_OPTIONS)
                 return button_index
