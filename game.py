@@ -262,10 +262,12 @@ class TicTacToeGame:
             # Make the easy or hard ai play its turn
             elif self.game_mode == EASY_AI_MODE:
                 self.handle_computer_turn(self.easy_ai)
+                self.check_winner()
             elif self.game_mode == HARD_AI_MODE:
                 self.handle_computer_turn(
                     self.hard_ai, player_squares=self.player_one_squares
                 )
+                self.check_winner()
         # Handle player two turn
         elif self.current_player == "player_two":
             self.board.buttons[num].config(
@@ -274,7 +276,7 @@ class TicTacToeGame:
             self.current_player = "player_one"
             self.player_two_squares.append(num)
             self.board.change_turn_label(self.player_one.player_name)
-        self.check_winner()
+            self.check_winner()
 
     def check_winner(self):
         """
