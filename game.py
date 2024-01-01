@@ -343,7 +343,6 @@ class TicTacToeGame:
                 self.board.change_turn_label(self.player_two.player_name)
         else:
             starting_player = random.choice(["player_one", "AI"])
-            print(starting_player)
             if starting_player == "AI":
                 if self.game_mode == EASY_AI_MODE:
                     self.handle_computer_turn(self.easy_ai)
