@@ -9,7 +9,6 @@ class TicTacToeBoard:
     Attributes
     ----------
     master (tk.Tk): The main Tkinter window.
-    current_player (str): The current player ("player_one"or "player_two").
     buttons (list): List of button widgets representing thegame cells.
 
     Methods
@@ -44,8 +43,7 @@ class TicTacToeBoard:
 
         Parameters
         ----------
-        player_one (Player): The first player.
-        player_two (Player): The second player
+        player_one (Player): The first player
         game_instance (_type_): The main game application instance
 
         Returns
@@ -93,7 +91,7 @@ class TicTacToeBoard:
 
     def change_turn_label(self, player_name):
         """
-        Changes the the turn label
+        Changes the turn label
 
         Parameters
         ----------

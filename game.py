@@ -22,8 +22,12 @@ class TicTacToeGame:
     Attributes
     ----------
     master(tk.Tk): The main Tkinter window.
-    player_one_squares (list): List of cell indices markedby player one.
-    player_two_squares (list): List of cell indices markedby player two.
+    player_one_squares (list): List of cell indices marked by player one.
+    player_two_squares (list): List of cell indices marked by player two.
+    computer_squares (list): List of cell indices marked by the computer.
+    game_mode (str): String that indicates what mode the player chose.
+    someone_won (bool): Boolean that checks if the player won to prevent the
+                        computer taking another turn.
 
     Methods
     ----------
@@ -219,7 +223,8 @@ class TicTacToeGame:
 
     def handle_turn(self, num):
         """
-        Handles a player's turn.
+        Handles the turns of both players. When playing against AI, the AI's
+        turn gets called after the player picks a square.
 
         Parameters
         ----------
@@ -240,9 +245,11 @@ class TicTacToeGame:
             )
             self.player_one_squares.append(num)
             self.check_winner()
+            # Set turn label to player 2's turn
             if self.game_mode == "two player":
                 self.current_player = "player_two"
                 self.board.change_turn_label(self.player_two.player_name)
+            # Make the easy or hard ai play its turn
             elif self.game_mode == "easy ai":
                 self.easy_ai.computer_turn = True
                 number = self.easy_ai.handle_turn(self.board.buttons, self.someone_won)
@@ -288,8 +295,10 @@ class TicTacToeGame:
             (2, 4, 6),
         ]
 
+        # Check if all squares are taken
         draw = all(button.cget("text") != "" for button in self.board.buttons)
 
+        # Check if one of the 2 players or the AI won the game their last turn
         for row in winning_conditions:
             if all(num in self.player_one_squares for num in row):
                 messagebox.showinfo("Winner", f"{self.player_one.player_name} Wins")
@@ -304,6 +313,7 @@ class TicTacToeGame:
                 self.someone_won = True
                 self.board.remove_gameboard()
 
+        # Show a pop up indicating a draw if all squares are taken and no one won yet
         if draw and self.someone_won == False:
             messagebox.showinfo("Draw", "It's a draw!")
             self.board.remove_gameboard()

@@ -10,7 +10,37 @@ BUTTON_OPTIONS = {
 
 
 class ComputerPlayer:
+    """
+    Represents the computer player
+
+    Attributes
+    ----------
+    difficulty (str): The difficulty level of the computer player.
+    computer_turn (bool): Flag to indicate whether it's the computer's turn.
+    turn_number (int): The current turn number.
+    corner_numbers (list): List of indices representing corners on the game board.
+    side_numbers (list): List of indices representing sides on the game board.
+    winning_conditions (list): List of tuples representing winning conditions on the game board.
+
+    Methods
+    ----------
+    handle_turn(): Handles the computer player's turn.
+
+    check_win_chances(): Checks the winning chances for a given symbol.
+
+    fill_random_square(): Fills a random empty square on the game board.
+
+    play_optimal_move(): Plays an optimal move based on a victory row.
+    """
+
     def __init__(self, difficulty):
+        """
+        Initializes a new instance of the ComputerPlayer class.
+
+        Parameters
+        ----------
+        difficulty (str): The difficulty level of the computer player.
+        """
         self.difficulty = difficulty
         self.computer_turn = True
         self.turn_number = 1
@@ -33,11 +63,28 @@ class ComputerPlayer:
         someone_won,
         player_squares=None,
     ):
+        """
+        Handles the computer player's turn.
+
+        Parameters
+        ----------
+        buttons: The buttons representing the game board.
+        someone_won (bool): Flag indicating whether someone has won.
+        player_squares (list): List of indices marked by the human player.
+
+        Returns
+        -------
+        button_index (int): The index of the selected button.
+        """
+        # Prevent the AI taking a turn if the player just won.
         if someone_won:
             return None
+        # Play the easy AI's turn
         if self.difficulty == "easy":
             button_index = self.fill_random_square(buttons)
+        # Play the hard AI's turn
         if self.difficulty == "hard":
+            # The playing strategy for the hard AI in their first turn
             if self.turn_number == 1:
                 if player_squares[0] in self.corner_numbers:
                     buttons[4].config(**BUTTON_OPTIONS)
@@ -49,6 +96,9 @@ class ComputerPlayer:
                     self.turn_number += 1
                     button_index = random_corner
             else:
+                # The playing strategy for the hard AI after their first turn.
+                # It takes priority to winning the game otherwise it tries to
+                # prevent the player from winning
                 computer_victory_row = self.check_win_chances(buttons, "O")
                 player_victory_row = self.check_win_chances(buttons, "X")
                 if computer_victory_row != None:
@@ -60,6 +110,19 @@ class ComputerPlayer:
         return button_index
 
     def check_win_chances(self, buttons, symbol):
+        """
+        Check if any of the winning conditions (any of the lines on the board)
+        has 2 of the same symbol and an empty square.
+
+        Parameters
+        ----------
+        buttons: The buttons representing the game board.
+        symbol (str): The symbol to check (either "X" or "O").
+
+        Returns
+        -------
+        condition (tuple): The winning condition if found, else None.
+        """
         for condition in self.winning_conditions:
             condition_points = 0
             for i in range(0, 3):
@@ -73,6 +136,17 @@ class ComputerPlayer:
                 return condition
 
     def fill_random_square(self, buttons):
+        """
+        Fills a random empty square on the game board.
+
+        Parameters
+        ----------
+        buttons: The buttons representing the game board.
+
+        Returns
+        -------
+        button_index (int): The index of the selected button.
+        """
         while self.computer_turn:
             random_number = random.randint(0, 8)
             if buttons[random_number].cget("text") == "":
@@ -83,6 +157,18 @@ class ComputerPlayer:
                 self.computer_turn = False
 
     def play_optimal_move(self, buttons, victory_row):
+        """
+        Plays an optimal move to either win the game or prevent the player to win.
+
+        Parameters
+        ----------
+        buttons: The buttons representing the game board.
+        victory_row (tuple): The winning condition.
+
+        Returns
+        -------
+        button_index (int): The index of the selected button.
+        """
         for button_index in victory_row:
             if buttons[button_index].cget("text") == "":
                 buttons[button_index].config(**BUTTON_OPTIONS)
