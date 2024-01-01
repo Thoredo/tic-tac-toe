@@ -119,7 +119,6 @@ class TicTacToeBoard:
             button.grid_remove()
         self.turn_label.grid_remove()
         self.board_frame.grid_remove()
-        self.game_instance.current_player = "player_one"
         self.game_instance.player_one_squares = []
         self.game_instance.player_two_squares = []
         self.game_instance.computer_squares = []

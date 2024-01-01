@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+import random
 from board import TicTacToeBoard
 from player import Player
 from ai import ComputerPlayer
@@ -181,6 +182,7 @@ class TicTacToeGame:
         self.player_one = Player(1)
         self.player_two = Player(2)
         self.board.create_board(self.player_one, game_instance=self)
+        self.decide_starting_player()
         self.release_grab()
 
     def easy_ai_game(self):
@@ -319,3 +321,19 @@ class TicTacToeGame:
             self.board.remove_gameboard()
 
         self.someone_won = False
+
+    def decide_starting_player(self):
+        """
+        Randomly decides if player one or two starts the game.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
+        self.current_player = random.choice(["player_one", "player_two"])
+        if self.current_player == "player_two":
+            self.board.change_turn_label(self.player_two.player_name)
