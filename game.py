@@ -15,6 +15,12 @@ BUTTON_STYLE = {
 
 LABEL_STYLE = {"font": ("Helvetica", 26), "fg": "#D21404"}
 
+TWO_PLAYER_MODE = "two player"
+
+EASY_AI_MODE = "easy ai"
+
+HARD_AI_MODE = "hard ai"
+
 
 class TicTacToeGame:
     """
@@ -178,7 +184,7 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
-        self.game_mode = "two player"
+        self.game_mode = TWO_PLAYER_MODE
         self.player_one = Player(1)
         self.player_two = Player(2)
         self.board.create_board(self.player_one, game_instance=self)
@@ -198,7 +204,7 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
-        self.game_mode = "easy ai"
+        self.game_mode = EASY_AI_MODE
         self.player_one = Player(1)
         self.easy_ai = ComputerPlayer("easy")
         self.board.create_board(self.player_one, game_instance=self)
@@ -217,7 +223,7 @@ class TicTacToeGame:
         None
         """
         self.board = TicTacToeBoard(self.master)
-        self.game_mode = "hard ai"
+        self.game_mode = HARD_AI_MODE
         self.player_one = Player(1)
         self.hard_ai = ComputerPlayer("hard")
         self.board.create_board(self.player_one, game_instance=self)
@@ -248,22 +254,16 @@ class TicTacToeGame:
             self.player_one_squares.append(num)
             self.check_winner()
             # Set turn label to player 2's turn
-            if self.game_mode == "two player":
+            if self.game_mode == TWO_PLAYER_MODE:
                 self.current_player = "player_two"
                 self.board.change_turn_label(self.player_two.player_name)
             # Make the easy or hard ai play its turn
-            elif self.game_mode == "easy ai":
-                self.easy_ai.computer_turn = True
-                number = self.easy_ai.handle_turn(self.board.buttons, self.someone_won)
-                self.computer_squares.append(number)
-            elif self.game_mode == "hard ai":
-                self.hard_ai.computer_turn = True
-                number = self.hard_ai.handle_turn(
-                    self.board.buttons,
-                    self.someone_won,
-                    player_squares=self.player_one_squares,
+            elif self.game_mode == EASY_AI_MODE:
+                self.handle_computer_turn(self.easy_ai)
+            elif self.game_mode == HARD_AI_MODE:
+                self.handle_computer_turn(
+                    self.hard_ai, player_squares=self.player_one_squares
                 )
-                self.computer_squares.append(number)
         # Handle player two turn
         elif self.current_player == "player_two":
             self.board.buttons[num].config(
@@ -334,6 +334,36 @@ class TicTacToeGame:
         -------
         None
         """
-        self.current_player = random.choice(["player_one", "player_two"])
-        if self.current_player == "player_two":
-            self.board.change_turn_label(self.player_two.player_name)
+        if self.game_mode == TWO_PLAYER_MODE:
+            starting_player = random.choice(["player_one", "player_two"])
+            self.current_player = starting_player
+            if self.current_player == "player_two":
+                self.board.change_turn_label(self.player_two.player_name)
+        else:
+            starting_player = random.choice(["player_one", "AI"])
+            if starting_player == "AI":
+                if self.game_mode == EASY_AI_MODE:
+                    self.handle_computer_turn(self.easy_ai)
+                elif self.game_mode == HARD_AI_MODE:
+                    self.handle_computer_turn(
+                        self.hard_ai, player_squares=self.player_one_squares
+                    )
+
+    def handle_computer_turn(self, computer_player, player_squares=None):
+        """
+        Handles the turn of a computer player.
+
+        Parameters
+        ----------
+        computer_player (ComputerPlayer): The computer player object (either easy_ai or hard_ai).
+        player_squares (list): List of cell indices marked by the human player.
+
+        Returns
+        -------
+        None
+        """
+        computer_player.computer_turn = True
+        number = computer_player.handle_turn(
+            self.board.buttons, self.someone_won, player_squares
+        )
+        self.computer_squares.append(number)
