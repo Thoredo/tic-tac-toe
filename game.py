@@ -239,17 +239,20 @@ class TicTacToeGame:
                 text="X", font=("Helvetica", 73), width=3, height=1, fg="red"
             )
             self.player_one_squares.append(num)
+            self.check_winner()
             if self.game_mode == "two player":
                 self.current_player = "player_two"
                 self.board.change_turn_label(self.player_two.player_name)
             elif self.game_mode == "easy ai":
                 self.easy_ai.computer_turn = True
-                number = self.easy_ai.handle_turn(self.board.buttons)
+                number = self.easy_ai.handle_turn(self.board.buttons, self.someone_won)
                 self.computer_squares.append(number)
             elif self.game_mode == "hard ai":
                 self.hard_ai.computer_turn = True
                 number = self.hard_ai.handle_turn(
-                    self.board.buttons, player_squares=self.player_one_squares
+                    self.board.buttons,
+                    self.someone_won,
+                    player_squares=self.player_one_squares,
                 )
                 self.computer_squares.append(number)
         # Handle player two turn
