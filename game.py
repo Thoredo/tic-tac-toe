@@ -208,6 +208,7 @@ class TicTacToeGame:
         self.player_one = Player(1)
         self.easy_ai = ComputerPlayer("easy")
         self.board.create_board(self.player_one, game_instance=self)
+        self.decide_starting_player()
         self.release_grab()
 
     def hard_ai_game(self):
@@ -227,6 +228,7 @@ class TicTacToeGame:
         self.player_one = Player(1)
         self.hard_ai = ComputerPlayer("hard")
         self.board.create_board(self.player_one, game_instance=self)
+        self.decide_starting_player()
         self.release_grab()
 
     def handle_turn(self, num):
@@ -341,10 +343,12 @@ class TicTacToeGame:
                 self.board.change_turn_label(self.player_two.player_name)
         else:
             starting_player = random.choice(["player_one", "AI"])
+            print(starting_player)
             if starting_player == "AI":
                 if self.game_mode == EASY_AI_MODE:
                     self.handle_computer_turn(self.easy_ai)
                 elif self.game_mode == HARD_AI_MODE:
+                    self.hard_ai.is_starting_player = True
                     self.handle_computer_turn(
                         self.hard_ai, player_squares=self.player_one_squares
                     )

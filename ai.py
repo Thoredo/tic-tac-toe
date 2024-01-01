@@ -21,6 +21,7 @@ class ComputerPlayer:
     corner_numbers (list): List of indices representing corners on the game board.
     side_numbers (list): List of indices representing sides on the game board.
     winning_conditions (list): List of tuples representing winning conditions on the game board.
+    is_starting_player(bool): Boolean that checks if the AI is the starting player
 
     Methods
     ----------
@@ -56,6 +57,7 @@ class ComputerPlayer:
             (0, 4, 8),
             (2, 4, 6),
         ]
+        self.is_starting_player = False
 
     def handle_turn(
         self,
@@ -84,6 +86,10 @@ class ComputerPlayer:
             button_index = self.fill_random_square(buttons)
         # Play the hard AI's turn
         if self.difficulty == "hard":
+            if self.is_starting_player:
+                button_index = self.fill_random_square(buttons)
+                self.is_starting_player = False
+                return button_index
             # The playing strategy for the hard AI in their first turn
             if self.turn_number == 1:
                 if player_squares[0] in self.corner_numbers:
