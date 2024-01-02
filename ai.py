@@ -89,6 +89,7 @@ class ComputerPlayer:
             if self.is_starting_player:
                 button_index = self.fill_random_square(buttons)
                 self.is_starting_player = False
+                self.turn_number += 1
                 return button_index
             # The playing strategy for the hard AI in their first turn
             if self.turn_number == 1:
