@@ -278,6 +278,11 @@ class TicTacToeGame:
             self.board.change_turn_label(self.player_one.player_name)
             self.check_winner()
 
+        # Show a pop up indicating a draw if all squares are taken and no one won yet
+        if self.draw and self.someone_won == False:
+            messagebox.showinfo("Draw", "It's a draw!")
+            self.board.remove_gameboard()
+
     def check_winner(self):
         """
         Checks if the player who just had a turn won the game.
@@ -302,7 +307,7 @@ class TicTacToeGame:
         ]
 
         # Check if all squares are taken
-        draw = all(button.cget("text") != "" for button in self.board.buttons)
+        self.draw = all(button.cget("text") != "" for button in self.board.buttons)
 
         # Check if one of the 2 players or the AI won the game their last turn
         for row in winning_conditions:
@@ -318,11 +323,6 @@ class TicTacToeGame:
                 messagebox.showinfo("Winner", "The AI Wins")
                 self.someone_won = True
                 self.board.remove_gameboard()
-
-        # Show a pop up indicating a draw if all squares are taken and no one won yet
-        if draw and self.someone_won == False:
-            messagebox.showinfo("Draw", "It's a draw!")
-            self.board.remove_gameboard()
 
         self.someone_won = False
 
